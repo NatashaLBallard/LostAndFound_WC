@@ -57,7 +57,7 @@ public class MainController {
 
     @RequestMapping("/list")
     public String listItems(Model model){
-        model.addAttribute("items",itemRepository.findAllByItemCategoryContainingIgnoreCase("Yes"));
+        model.addAttribute("items",itemRepository.findAllByFoundContainingIgnoreCase("No"));
         return"list";
     }
     @RequestMapping("/currentlist")
