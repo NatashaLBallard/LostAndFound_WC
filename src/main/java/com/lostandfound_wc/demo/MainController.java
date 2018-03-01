@@ -18,6 +18,7 @@ import java.util.Map;
 
 @Controller
 public class MainController {
+
     @Autowired
     ItemRepository itemRepository;
 
@@ -27,8 +28,8 @@ public class MainController {
     private UserService userService;
 
     @RequestMapping("/")
-    public String showIndex(HttpServletRequest request,Model model){
-        model.addAttribute("items",itemRepository.findAllByListTypeContainingIgnoreCase("Lost"));
+    public String showIndex(Model model){
+        model.addAttribute("items",itemRepository.findAllByItemCategoryContainingIgnoreCase("Lost"));
         return "index";
     }
 
@@ -56,7 +57,7 @@ public class MainController {
 
     @RequestMapping("/list")
     public String listItems(Model model){
-        model.addAttribute("items",itemRepository.findAllByListTypeContainingIgnoreCase("Found"));
+        model.addAttribute("items",itemRepository.findAllByItemCategoryContainingIgnoreCase("Found"));
         return"list";
     }
     @RequestMapping("/currentlist")
