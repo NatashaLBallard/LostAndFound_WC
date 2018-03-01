@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" xmlns:th="http://www.thymeleaf.org">
 <head>
+<head>
     <meta charset="UTF-8"/>
     <title>Title</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"/>
@@ -10,15 +11,19 @@
 <div th:replace="base :: navbarmenu"></div>
 
 
-<h2>Current Listings</h2>
+<h2>List of Your Items</h2>
 <div th:replace="base :: navlinks"></div><br/><br/>
 
 <div class="container">
+
+<p><span sec:authorize="isAuthenticated()">
+Welcome <b><p sec:authentication="name">!</p></b>
+       </span></p>
+
     <table class="table" title="currentItems">
         <thead>
         <tr>
             <th></th>
-            <th>Submitted By</th>
             <th>Name</th>
             <th>Category</th>
             <th>Date Lost</th>
@@ -29,11 +34,6 @@
         <tbody>
         <tr th:each="item : ${items}">
             <td th:text="${item.image}"></td>
-
-            <td><span sec:authorize="isAuthenticated()">
-                <p sec:authentication="name"></p>
-                </span>
-            </td>
 
             <td th:text="${item.itemName}"></td>
 
