@@ -3,8 +3,8 @@ package com.lostandfound_wc.demo;
 import javax.persistence.*;
 import java.util.Collection;
 
+@Entity
 public class Role {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;

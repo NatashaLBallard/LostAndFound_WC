@@ -51,13 +51,13 @@ public class MainController {
             return "itemform";
         }
         itemRepository.save(item);
-        return "redirect:/viewitem";
+        return "redirect:/list";
     }
 
 
     @RequestMapping("/list")
     public String listItems(Model model){
-        model.addAttribute("items",itemRepository.findAllByItemCategoryContainingIgnoreCase("Found"));
+        model.addAttribute("items",itemRepository.findAllByItemCategoryContainingIgnoreCase("Yes"));
         return"list";
     }
     @RequestMapping("/currentlist")
@@ -68,7 +68,7 @@ public class MainController {
     @RequestMapping("/detail/{id}")
     public String showDetail(@PathVariable("id")long id, Model model){
         model.addAttribute("item",itemRepository.findOne(id));
-        return "showroomdetails";
+        return "showitemdetails";
     }
 
     @RequestMapping("/update/{id}")
@@ -93,8 +93,8 @@ public class MainController {
         itemRepository.save(item);
         return "redirect:/list";
     }
-    @RequestMapping("/available/{id}")
-    public String availableItem(@PathVariable("id") long id,Model model,RedirectAttributes redirectAttributes){
+    @RequestMapping("/lost/{id}")
+    public String lostItem(@PathVariable("id") long id,Model model,RedirectAttributes redirectAttributes){
         model.addAttribute("item",itemRepository.findOne(id));
 
         Item item=itemRepository.findOne(id);
