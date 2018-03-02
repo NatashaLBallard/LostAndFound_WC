@@ -8,4 +8,7 @@ public interface UserRepository extends CrudRepository<User,Long> {
     User findByEmail(String email);
     Long countByEmail(String email);
     Long countByUsername(String username);
+    User findUserByUsername(String username);
+
+    //Iterable <Item> findAllByUsername(String username);
 }

@@ -3,6 +3,8 @@ package com.lostandfound_wc.demo;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class User {
@@ -33,6 +35,28 @@ public class User {
             inverseJoinColumns=@JoinColumn(name="role_id"))
     private Collection<Role> roles;
 
+
+
+
+
+
+    @ManyToMany
+            //(mappedBy = "users")
+    private Set<Item> myItems;
+
+    public User() {
+        this.myItems = new HashSet<>();
+    }
+
+
+
+
+
+
+
+
+
+
     public User(String email, String password, String firstName, String lastName, boolean enabled, String username) {
         this.email = email;
         this.password = password;
@@ -42,8 +66,8 @@ public class User {
         this.username = username;
     }
 
-    public User() {
-    }
+//    public User() {
+//    }
 
     public long getId() {
         return id;
@@ -108,5 +132,25 @@ public class User {
     public void setRoles(Collection<Role> roles) {
         this.roles = roles;
     }
+
+
+
+
+
+
+
+
+
+    public Set<Item> getMyItems(){
+        return myItems;
+    }
+
+    public void setMyItems(Set<Item> myItems){
+        this.myItems = myItems;
+    }
+
+
+
+
 }
 

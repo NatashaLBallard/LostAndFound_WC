@@ -10,6 +10,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.security.core.Authentication;
+import sun.net.www.protocol.http.AuthenticationInfo;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -22,6 +24,9 @@ public class MainController {
     @Autowired
     ItemRepository itemRepository;
 
+
+    @Autowired
+    UserRepository userRepository;
 
 
     @Autowired
@@ -44,6 +49,91 @@ public class MainController {
         return"/add";
     }
 
+
+
+
+
+
+
+
+    @RequestMapping("userlist")
+    public String showUserList(Model model, Authentication auth)
+    {
+        if(auth!=null)
+        {
+            User thisUser = userRepository.findUserByUsername(auth.getName());
+            if(thisUser!=null){
+                model.addAttribute("useritems", thisUser.getMyItems());
+                System.out.println(auth.getName() + "authorities:" +auth.getAuthorities().toString());
+                model.addAttribute("currentuser", userRepository.findUserByUsername(auth.getName()));
+            }
+        }
+
+        else
+        {
+            if(auth!=null)
+                model.addAttribute("inMemory",true);
+            else
+                model.addAttribute("inMemory",false);
+        }
+
+        return "index";
+    }
+
+
+
+
+    @GetMapping("/additem")
+    public String addItem(Model model){
+        model.addAttribute("itemobject",new Item());
+        return"additem";
+    }
+
+
+
+    @PostMapping("/additem")
+    public String saveMyItem(@Valid @ModelAttribute("itemobject") Item item, BindingResult result, Authentication auth)
+    {
+        if (result.hasErrors()) {
+            return "additem";
+        }
+        itemRepository.save(item);
+        User currentUser = userRepository.findUserByUsername(auth.getName());
+        currentUser.getMyItems().toString();
+        currentUser.addItem(item);
+        userRepository.save(currentUser);
+
+        return "redirect:/";
+
+    }
+
+
+    @GetMapping("/listitems")
+    public @ResponseBody String listItems(Authentication auth)
+    {
+        return userRepository.findUserByUsername(auth.getName()).getMyItems().toString();
+    }
+
+//    @GetMapping("/additemtouser/{id}")
+//    public String addItemToUser(Model model, @PathVariable("id") long id)
+//    {
+//        //model.addAttribute("currentUser", userRepository.findAll());
+//        model.addAttribute("itemobject",itemRepository.findOne(id));
+//        return"userlist";
+//    }
+
+
+
+
+
+
+
+
+
+
+
+
+
     @PostMapping("/process")
     public String processItem(@Valid @ModelAttribute("item") Item item,BindingResult result){
 
@@ -60,10 +150,18 @@ public class MainController {
         model.addAttribute("items",itemRepository.findAllByFoundContainingIgnoreCase("No"));
         return"list";
     }
+
     @RequestMapping("/currentlist")
     public String currentListings(Model model){
         model.addAttribute("items",itemRepository.findAll());
         return"currentlist";
+    }
+
+
+    @RequestMapping("/userlist")
+    public String usersListings(Model model){
+        model.addAttribute("items",itemRepository.findAll());
+        return"userlist";
     }
     @RequestMapping("/detail/{id}")
     public String showDetail(@PathVariable("id")long id, Model model){

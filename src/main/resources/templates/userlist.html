@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4" xmlns:th="http://www.thymeleaf.org">
 <head>
-<head>
     <meta charset="UTF-8"/>
     <title>Title</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"/>
@@ -53,6 +52,21 @@ Welcome <b><p sec:authentication="name">!</p></b>
         </tr>
         </tbody>
     </table>
+
+
+
+
+    <div th:each="eachItem:${items}">
+        <p th:text="${eachItem.itemName}"></p>
+        <h4><a th:href="@{/addactortomovie/{id}(id=${eachItem.id})}" th:inline="text">Add actors</a></h4>
+        <div>
+            <h3>Actors:</h3>
+            <div th:each="eachActor:${eachMovie.actors}">
+                <p th:text="${eachActor.realName}"></p>
+            </div>
+        </div>
+    </div>
+
 </div>
 </body>
 </html>

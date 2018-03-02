@@ -2,12 +2,11 @@ package com.lostandfound_wc.demo;
 
 import org.hibernate.validator.constraints.URL;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Item {
@@ -34,6 +33,28 @@ public class Item {
     private String found;
 
     private String itemCategory;
+
+
+
+
+
+
+
+    @ManyToMany
+    private Set<User> users;
+
+    public Item(){
+        this.users = new HashSet<>();
+    }
+
+
+
+
+
+
+
+
+
 
     public long getId() {
         return id;
@@ -90,4 +111,29 @@ public class Item {
     public void setItemCategory(String itemCategory) {
         this.itemCategory = itemCategory;
     }
+
+
+
+
+    public Set<User> getUsers(){
+        return users;
+    }
+
+    public void setUsers(Set<User> users){
+        this.users = users;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "itemName='" + itemName + '\'' +
+                ", description='" + description + '\'' +
+                ", dateLost='" + dateLost + '\'' +
+                ", image='" + image + '\'' +
+                ", found='" + found + '\'' +
+                ", itemCategory='" + itemCategory + '\'' +
+                '}';
+    }
+
 }
